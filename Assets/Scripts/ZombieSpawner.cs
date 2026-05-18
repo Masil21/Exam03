@@ -31,7 +31,7 @@ public class ZombieSpawner : MonoBehaviour {
     // 웨이브 정보를 UI로 표시
     private void UpdateUI() {
         // 현재 웨이브와 남은 적 수 표시
-        //UIManager.instance.UpdateWaveText(wave, zombies.Count);
+        UIManager.instance.UpdateWaveText(wave, zombies.Count);
     }
 
     // 현재 웨이브에 맞춰 좀비들을 생성
@@ -68,6 +68,9 @@ public class ZombieSpawner : MonoBehaviour {
 
         //사망한 좀비를 리스트에서 제거하는 콜백을 등록한다
         zombie.onDeath += () => zombies.Remove(zombie);
+
+        //좀비 처치시 점수를 추가하는 콜백을 등록한다
+        zombie.onDeath += () => GameManager.instance.AddScore(100);
 
         //사망한 좀비를 10초뒤에 파괴하는 콜백을 등록한다
         zombie.onDeath += () => Destroy(zombie.gameObject, 10f);
