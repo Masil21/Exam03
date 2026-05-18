@@ -36,43 +36,43 @@ public class ZombieSpawner : MonoBehaviour {
 
     // 현재 웨이브에 맞춰 좀비들을 생성
     private void SpawnWave() {
-        //웨이브를 1 증가 시킨다 
+        // 웨이브 1 증가
         wave++;
 
-        //현재 웨이브 * 1.5를 반올림한 수만큼 좀비를 생성한다 
-        int zombieCount = Mathf.RoundToInt(wave * 1.5f);
+        // 현재 웨이브 * 1.5에 반올림 한 개수 만큼 좀비를 생성
+        int spawnCount = Mathf.RoundToInt(wave * 1.5f);
 
-        //zombieCount만큼 좀비를 생성한다
-        for (int i = 0; i < zombieCount; i++)
+        // spawnCount 만큼 좀비를 생성
+        for (int i = 0; i < spawnCount; i++)
         {
+            // 좀비 생성 처리 실행
             CreateZombie();
         }
     }
 
     // 좀비를 생성하고 생성한 좀비에게 추적할 대상을 할당
     private void CreateZombie() {
-        //사용한 좀비 데이터를 랜덤으로 선택한다 
-        ZombieData data = zombieDatas[Random.Range(0, zombieDatas.Length)];
-
-        //좀비 위치를 랜덤으로 선택한다
+        // 사용할 좀비 데이터 랜덤으로 결정
+        ZombieData zombieData = zombieDatas[Random.Range(0, zombieDatas.Length)];
+        
+        // 생성할 위치를 랜덤으로 결정
         Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
-        //좀비 프리팹으로부터 프리팹 인스턴스를 생성한다 
+        // 좀비 프리팹으로부터 좀비 생성
         Zombie zombie = Instantiate(zombiePrefab, spawnPoint.position, spawnPoint.rotation);
 
-        //좀비의 셋업 데이터를 할당한다
-        zombie.Setup(data);
+        // 생성한 좀비의 능력치 설정
+        zombie.Setup(zombieData);
 
-        //좀비 리스트에 생성한 좀비를 추가한다
+        // 생성된 좀비를 리스트에 추가
         zombies.Add(zombie);
 
-        //사망한 좀비를 리스트에서 제거하는 콜백을 등록한다
+        // 좀비의 onDeath 이벤트에 익명 메서드 등록
+        // 사망한 좀비를 리스트에서 제거
         zombie.onDeath += () => zombies.Remove(zombie);
-
-        //좀비 처치시 점수를 추가하는 콜백을 등록한다
-        zombie.onDeath += () => GameManager.instance.AddScore(100);
-
-        //사망한 좀비를 10초뒤에 파괴하는 콜백을 등록한다
+        // 사망한 좀비를 10 초 뒤에 파괴
         zombie.onDeath += () => Destroy(zombie.gameObject, 10f);
+        // 좀비 사망시 점수 상승
+        zombie.onDeath += () => GameManager.instance.AddScore(100);
     }
 }

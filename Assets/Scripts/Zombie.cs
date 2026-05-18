@@ -52,7 +52,7 @@ public class Zombie : LivingEntity {
     public void Setup(ZombieData zombieData) {
         // 체력 설정
         startingHealth = zombieData.health;
-        health = zombieData.health;
+        health = zombieData.damage;
         // 공격력 설정
         damage = zombieData.damage;
         // 내비메시 에이전트의 이동 속도 설정
@@ -104,8 +104,6 @@ public class Zombie : LivingEntity {
                     {
                         // 추적 대상을 해당 LivingEntity로 설정
                         targetEntity = livingEntity;
-
-                      
 
                         // for문 루프 즉시 정지
                         break;

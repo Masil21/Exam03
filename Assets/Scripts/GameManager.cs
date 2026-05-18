@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour {
         {
             // 점수 추가
             score += newScore;
-
             // 점수 UI 텍스트 갱신
             UIManager.instance.UpdateScoreText(score);
         }
